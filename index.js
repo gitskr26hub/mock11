@@ -8,7 +8,7 @@ const {UserModel} = require("./models/User.model")
 const app = express();
 
 app.use(express.json())
-app.use(cors({origin : "*"}))
+app.use(cors())
 
 app.get("/", (req, res) => {
     res.send("Welcome to this api for sign up and login(signin) ")
@@ -39,7 +39,7 @@ app.post("/signup", async (req, res) => {
     
 })
 
-app.get("/signin", async (req, res) => {
+app.post("/signin", async (req, res) => {
     const {email, password} = req.body;
     try{
         const user = await UserModel.find({email})
