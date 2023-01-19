@@ -14,7 +14,9 @@ app.get("/", (req, res) => {
     res.send("Welcome to this api for sign up and login(signin) ")
 })
 
-
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+  })
 app.post("/signup", async (req, res) => {
     console.log("req.body",req.body)
     const {email, password} = req.body;
