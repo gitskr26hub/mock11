@@ -68,7 +68,7 @@ app.post("/signin", async (req, res) => {
     }
 })
 
-app.listen(7000, async () => {
+app.listen(8080, async () => {
     try{
         await connection;
         console.log("Connected to MongoDB Successfully")
@@ -77,6 +77,6 @@ app.listen(7000, async () => {
         console.log("Error with mongoDB")
         console.log(err)
     }
-    console.log("Listening on PORT 7000")
+    console.log("Listening on PORT 8080")
 })
 
