@@ -1,82 +1,74 @@
-const express = require("express")
+const express=require("express")
 
-const cors = require("cors")
-require('dotenv').config()
-const {connection} = require("./config/db")
-const {UserModel} = require("./models/User.model")
+var cors = require('cors')
+const app=express()
 
-const app = express();
+
 
 app.use(express.json())
 app.use(cors())
 
-app.get("/", (req, res) => {
-    res.send("Welcome to this api for sign up and login(signin) ")
+const {connection}=require("./db")
+const { UserModel }=require("./USER.modal")
+
+
+app.get("/",(req,res)=>{
+res.send("welcome to mock 15")
 })
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-  })
-app.post("/signup", async (req, res) => {
-    console.log("req.body",req.body)
-    const {email, password} = req.body;
 
-    console.log("req email",email,"req password",password)
 
-    const userPresent = await UserModel.findOne({email})
-    
-    if(userPresent?.email){
-        res.send("User already exist, Please go to Sign in page")
-    }
-    else{
-        try{    const user = new UserModel({email,password})
-                await user.save()
-                res.send("Sign up successfull")
-                    }
-       catch(err){
-            console.log(err)
-            res.send("Something went wrong, please try again later")
-       }
-    }
-    
-})
-
-app.post("/signin", async (req, res) => {
-    const {email, password} = req.body;
+app.post("/signup",async(req,res)=>{
+    const {email,password,name}=req.body
     try{
-        const user = await UserModel.find({email})
-         
-      if(user.length > 0){
-        const userpassword = user[0].password;
        
-        if(userpassword===password){
-           res.send("signin successfull")
-        }
-        else{
-            res.send({msg:"Wrong password"})
-        }
-       
-        console.log("password",userpassword)
-           
-      } 
-      else{
-        res.send("Login failed")
-      }
-    }
-    catch{
-        res.send("Something went wrong, please try again later")
-    }
-})
-
-app.listen(8080, async () => {
-    try{
-        await connection;
-        console.log("Connected to MongoDB Successfully")
+            const user=new UserModel({email,password,name})
+            await user.save()
+            res.json({"msg":"Signup successfull"})
     }
     catch(err){
-        console.log("Error with mongoDB")
         console.log(err)
+        res.json({msg:"something wrong"})
     }
-    console.log("Listening on PORT 8080")
+    
 })
 
+app.post("/login",async(req,res)=>{
+    const {email,password}=req.body
+    console.log(email,password)
+    try{
+        const user=await UserModel.find({email})
+    
+        //console.log(user[0].email,user[0].password)
+
+        if(user.length>0&&user[0].email===email&&user[0].password===password ){
+                    
+            res.send(user)
+                
+        }
+        else{
+            res.send("login fail")
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.json({msg:"something went wrong ,try again later"})
+    }
+})
+
+
+
+
+
+app.listen(8080,async()=>{
+
+    try{
+        await connection
+        console.log("Port start at 8080")
+    }
+    catch(err){
+        console.log("err in mongo connect to DB")
+        console.log(err)
+    }
+
+})
