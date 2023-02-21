@@ -2,7 +2,7 @@
     "users": [
       {
         "id": 1,
-        "username": "Ram",
+        "username": "ram",
         "email": "ram@gmail.com",
         "password": "123456"
       }
@@ -60,6 +60,20 @@
         "likes": 24,
         "comments": [],
         "id": 2
+      }
+    ],
+    "masaiQuiz":[
+      {
+        "id":1,
+        "name":"rani",
+        "Category":9,
+        "Difficulty":"easy",
+        "Number_of_questions":10,
+        "Correct_answers_count":5,
+        "Incorrect_answers_count":5,
+        "Total_score":5,
+        "Percentage":50
+         
       }
     ]
   }
